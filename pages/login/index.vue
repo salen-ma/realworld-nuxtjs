@@ -50,9 +50,12 @@
 </template>
 
 <script>
+// 仅在客户端加载 js-cookie
+const Cookie = process.client ? require('js-cookie') : undefined
 import { login, register } from '@/api/user'
 
 export default {
+  middleware: 'notAuth',
   name: 'LoginIndex',
   props: {
     isLogin: Boolean
@@ -73,6 +76,12 @@ export default {
         const { data } = this.isLogin ?
           await login({ user: this.user }) :
           await register({ user: this.user })
+
+        this.$store.commit('setUser', data.user)
+
+        // 数据持久化
+        Cookie.set('user', data.user)
+
         this.$router.push('/')
       } catch (err) {
         this.errors = err.response.data.errors

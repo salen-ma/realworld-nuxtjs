@@ -88,6 +88,7 @@
 
 <script>
 export default {
+  middleware: 'auth',
   name: 'ProfileIndex'
 }
 </script>
