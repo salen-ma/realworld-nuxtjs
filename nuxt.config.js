@@ -1,4 +1,5 @@
 module.exports = {
+  plugins: ['@/plugins/request.js', '@/plugins/dayjs.js'],
   router: {
     linkActiveClass: 'active',
     extendRoutes(routes, resolve) {
@@ -50,5 +51,13 @@ module.exports = {
         }
       ])
     }
-  }
+  },
+  head: {
+    title: 'conduit',
+    meta: [
+      { charset: 'utf-8' },
+      { hid: 'keywords', name: 'keywords', content: 'conduit' },
+      { hid: 'description', name: 'description', content: 'conduit' }
+    ],
+  },
 }
