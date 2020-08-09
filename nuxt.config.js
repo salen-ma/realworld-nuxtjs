@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   plugins: ['@/plugins/request.js', '@/plugins/dayjs.js'],
   router: {
     linkActiveClass: 'active',
