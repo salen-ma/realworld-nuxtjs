@@ -6,15 +6,8 @@ export const request =  axios.create({
 })
 
 export default function ({ req, store }) {
-  let { user } = store.state
-  if (!user && req.headers.cookie) {
-    const parsed = cookieparser.parse(req.headers.cookie)
-    try {
-      user = JSON.parse(parsed.user)
-    } catch (err) {}
-  }
-
   request.interceptors.request.use(function (config) {
+    let { user } = store.state
     // 在发送请求之前做些什么
     if (user && user.token) {
       config.headers.Authorization = `Token ${user.token}`
