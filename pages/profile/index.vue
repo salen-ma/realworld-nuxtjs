@@ -11,14 +11,22 @@
             <p>
               {{ profile.bio }}
             </p>
-            <button class="btn btn-sm action-btn"
+
+            <button v-if="isSelf"
+              class="btn btn-sm action-btn btn-outline-secondary"
+              @click="toEditProfile(profile.username)">
+              &nbsp; <i class="ion-gear-a"></i> Edit Profile Settings
+            </button>
+            <button v-else
+              class="btn btn-sm action-btn"
+              @click="followHandler(profile.username)"
+              :disabled="disabledFollow"
               :class="{
                 'btn-outline-secondary': !profile.following,
                 'btn-secondary': profile.following
               }">
-              <i class="ion-plus-round"></i>
-              &nbsp;
-              {{ profile.following ? 'Unfollow' : 'Follow' }} Eric {{ profile.username }}
+              &nbsp; <i class="ion-plus-round"></i>
+              {{ profile.following ? 'Unfollow' : 'Follow' }} {{ profile.username }}
             </button>
           </div>
 
@@ -98,7 +106,7 @@
 </template>
 
 <script>
-import { getProfile } from '@/api/profile'
+import { getProfile, followUser, unFollowUser } from '@/api/profile'
 import { getArticles } from '@/api/article'
 import ArticleItem from '@/components/article-item'
 
@@ -111,6 +119,7 @@ export default {
     const tab = query.tab || 'my_articles'
     const username = params.username
     const isLogin = !!store.state.user
+    const isSelf = store.state.user && store.state.user.username === params.username
 
     let articleParams = {
       limit: limit,
@@ -138,12 +147,43 @@ export default {
       totalPage: Math.ceil(articlesCount / limit),
       tab: tab,
       isLogin: isLogin,
+      isSelf: isSelf,
     }
   },
 
   components: {
     ArticleItem
   },
+
+  data () {
+    return  {
+      disabledFollow: false
+    }
+  },
+
+  methods: {
+    async followHandler (username) {
+      if (!this.isLogin) {
+        this.$router.push('/register')
+        return
+      }
+
+      this.disabledFollow = true
+      if (this.profile.following) {
+        await unFollowUser(username)
+        this.profile.following = false
+      } else {
+        await followUser(username)
+        this.profile.following = true
+      }
+      this.disabledFollow = false
+    },
+
+    // 去设置页
+    toEditProfile () {
+      this.$router.push('/settings')
+    }
+  }
 }
 </script>
 

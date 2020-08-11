@@ -28,3 +28,20 @@ export const register = ({ user = {} }) => {
     }
   })
 }
+
+// 更新用户信息
+export const updateUser = ({ user = {} }) => {
+  return request({
+    method: 'PUT',
+    url: '/api/user',
+    data: {
+      user: {
+        "username": user.username,
+        "email": user.email,
+        "password": user.password,
+        "bio": user.bio,
+        "image": user.image
+      }
+    }
+  })
+}

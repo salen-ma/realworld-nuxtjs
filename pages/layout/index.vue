@@ -24,7 +24,12 @@
               </nuxt-link>
             </li>
             <li class="nav-item">
-              <nuxt-link to="/profile/liang" class="nav-link">
+              <nuxt-link :to="{
+                name: 'profile',
+                params: {
+                  username: user.username
+                }
+              }" class="nav-link">
                 <img class="user-pic" :src="user.image">
                 {{ user.username }}
               </nuxt-link>
