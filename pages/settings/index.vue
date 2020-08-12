@@ -37,7 +37,8 @@
                   <input v-model="newUser.password"
                     class="form-control form-control-lg" type="password" placeholder="Password">
                 </fieldset>
-                <button @click="updateUserHandler"
+                <button @click.prevent="updateUserHandler"
+                  :disabled="disabledUpdate"
                   class="btn btn-lg btn-primary pull-xs-right">
                   Update Settings
                 </button>
@@ -72,7 +73,8 @@ export default {
         username: '',
         password: undefined,
       },
-      errors: {}
+      errors: {},
+      disabledUpdate: false
     }
   },
 
@@ -86,19 +88,20 @@ export default {
 
   methods: {
     async updateUserHandler () {
+      this.disabledUpdate = true
       try {
-        const { data } = await updateUser(this.newUser)
+        const { data } = await updateUser({ user: this.newUser })
 
         // 更新 store
         this.$store.commit('setUser', data.user)
 
         // 更新 cookie
         Cookie.set('user', data.user)
-
         this.$router.push(`/profile/${data.user.username}`)
       } catch (err) {
         this.errors = err.response.data.errors
       }
+      this.disabledUpdate = false
     },
     logout () {
       // 清除登录信息并退出

@@ -66,3 +66,43 @@ export const getComments = (slug) => {
     url: `/api/articles/${slug}/comments`
   })
 }
+
+// 创建文章
+export const createArticle = ({ article = {} }) => {
+  return request({
+    method: 'POST',
+    url: '/api/articles',
+    data: {
+      article: {
+        "title": article.title,
+        "description": article.description,
+        "body": article.body,
+        "tagList": article.tagList
+      }
+    }
+  })
+}
+
+// 更新文章
+export const updateArticle = ({ article = {} }) => {
+  return request({
+    method: 'PUT',
+    url: `/api/articles/${article.slug}`,
+    data: {
+      article: {
+        "title": article.title,
+        "description": article.description,
+        "body": article.body,
+        "tagList": article.tagList
+      }
+    }
+  })
+}
+
+// 删除文章
+export const deleteArticle = (slug) => {
+  return request({
+    method: 'DELETE',
+    url: `/api/articles/${slug}`
+  })
+}

@@ -58,7 +58,6 @@ export default {
     },
     isLogin: {
       type: Boolean,
-      required: true,
       default: false
     }
   },
