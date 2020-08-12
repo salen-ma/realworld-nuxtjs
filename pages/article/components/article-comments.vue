@@ -2,11 +2,14 @@
   <div>
     <form class="card comment-form">
       <div class="card-block">
-        <textarea class="form-control" placeholder="Write a comment..." rows="3"></textarea>
+        <textarea v-model="commentIpt"
+          class="form-control" placeholder="Write a comment..." rows="3"></textarea>
       </div>
       <div class="card-footer">
         <img :src="user.image" class="comment-author-img" />
-        <button class="btn btn-sm btn-primary">
+        <button class="btn btn-sm btn-primary"
+          @click.prevent="addCommentHandler"
+          :disabled="disabledAdd">
           Post Comment
         </button>
       </div>
@@ -35,6 +38,11 @@
           }
         }" class="comment-author">{{ comment.author.username }}</nuxt-link>
         <span class="date-posted">{{ comment.createdAt | date('MMMM D, YYYY') }}</span>
+        <span v-if="comment.author.username === user.username"
+          @click="delCommentHandler(comment.id)"
+          class="mod-options">
+          <i class="ion-trash-a"></i>
+        </span>
       </div>
     </div>
 
@@ -42,7 +50,7 @@
 </template>
 
 <script>
-import { getComments } from '@/api/article'
+import { getComments, addComment, delComment } from '@/api/article'
 import { mapState } from 'vuex'
 
 export default {
@@ -58,7 +66,9 @@ export default {
 
   data () {
     return {
-      comments: []
+      comments: [],
+      commentIpt: '',
+      disabledAdd: false,
     }
   },
 
@@ -69,6 +79,29 @@ export default {
   async mounted () {
     const { data } = await getComments(this.article.slug)
     this.comments = data.comments
+  },
+
+  methods: {
+    async addCommentHandler () {
+      if (!this.commentIpt.trim()) {
+        return
+      }
+
+      this.disabledAdd = true
+      const { data } = await addComment({
+        slug: this.article.slug,
+        comment: {
+          body: this.commentIpt
+        }
+      })
+      this.comments.unshift(data.comment)
+      this.commentIpt = ''
+      this.disabledAdd = false
+    },
+    async delCommentHandler (id) {
+      await delComment(this.article.slug, id)
+      this.comments = this.comments.filter(comment => comment.id !== id)
+    }
   }
 }
 </script>

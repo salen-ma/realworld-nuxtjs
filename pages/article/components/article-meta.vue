@@ -58,7 +58,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { deleteArticle } from '@/api/article'
+import { delArticle } from '@/api/article'
 
 export default {
   name: 'ArticleMeta',
@@ -100,7 +100,7 @@ export default {
   methods: {
     async deleteArticleHandler () {
       this.disabledDelete = true
-      await deleteArticle(this.article.slug)
+      await delArticle(this.article.slug)
       this.$router.push({
         name: 'home',
         query: {

@@ -38,7 +38,8 @@
                 minlength="8"
                 class="form-control form-control-lg" type="password" placeholder="Password">
             </fieldset>
-            <button class="btn btn-lg btn-primary pull-xs-right">
+            <button class="btn btn-lg btn-primary pull-xs-right"
+              :disabled="disabledSign">
               {{isLogin ? 'Sign in' : 'Sign up'}}
             </button>
           </form>
@@ -67,11 +68,13 @@ export default {
         email: '',
         password: '',
       },
-      errors: {}
+      errors: {},
+      disabledSign: false
     }
   },
   methods: {
     async onSubmit() {
+      this.disabledSign = true
       try {
         const { data } = this.isLogin ?
           await login({ user: this.user }) :
@@ -86,6 +89,7 @@ export default {
       } catch (err) {
         this.errors = err.response.data.errors
       }
+      this.disabledSign = false
     }
   }
 }
