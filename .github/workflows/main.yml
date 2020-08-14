@@ -54,7 +54,8 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd /data/wwwroot/realworld-nuxtjs
-          git fetch https://github.com/salen-ma/realworld-nuxtjs.git master
+          git checkout master
+          git pull
           yarn
           yarn build
           pm2 reload pm2.config.json

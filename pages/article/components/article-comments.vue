@@ -1,6 +1,7 @@
 <template>
   <div>
-    <form class="card comment-form">
+    <form v-if="user"
+      class="card comment-form">
       <div class="card-block">
         <textarea v-model="commentIpt"
           class="form-control" placeholder="Write a comment..." rows="3"></textarea>
@@ -14,6 +15,12 @@
         </button>
       </div>
     </form>
+    <p v-else style="display: inherit;">
+      <nuxt-link to="/login">Sign in</nuxt-link>
+      or
+      <nuxt-link to="/register">sign up</nuxt-link>
+      to add comments on this article.
+    </p>
 
     <div v-for="comment in comments"
       :key="comment.id"
