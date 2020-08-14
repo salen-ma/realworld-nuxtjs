@@ -16,7 +16,7 @@
       <span class="date">{{ article.createdAt | date('MMMM D, YYYY') }}</span>
     </div>
 
-    <template v-if="isSelf">
+    <template v-if="user && user.username === article.author.username">
       <nuxt-link class="btn btn-outline-secondary btn-sm"
         :to="{
           name: 'editor',
@@ -82,19 +82,12 @@ export default {
 
   data () {
     return {
-      isSelf: false,
       disabledDelete: false,
     }
   },
 
   computed: {
     ...mapState(['user'])
-  },
-
-  mounted () {
-    if (this.user.username === this.article.author.username) {
-      this.isSelf = true
-    }
   },
 
   methods: {

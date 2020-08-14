@@ -6,7 +6,7 @@
           class="form-control" placeholder="Write a comment..." rows="3"></textarea>
       </div>
       <div class="card-footer">
-        <img :src="user.image" class="comment-author-img" />
+        <img :src="user && user.image" class="comment-author-img" />
         <button class="btn btn-sm btn-primary"
           @click.prevent="addCommentHandler"
           :disabled="disabledAdd">
@@ -38,7 +38,7 @@
           }
         }" class="comment-author">{{ comment.author.username }}</nuxt-link>
         <span class="date-posted">{{ comment.createdAt | date('MMMM D, YYYY') }}</span>
-        <span v-if="comment.author.username === user.username"
+        <span v-if="user && comment.author.username === user.username"
           @click="delCommentHandler(comment.id)"
           class="mod-options">
           <i class="ion-trash-a"></i>
