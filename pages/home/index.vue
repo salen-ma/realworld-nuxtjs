@@ -93,7 +93,7 @@
           <div class="sidebar">
             <p>Popular Tags</p>
 
-            <div class="tag-list">
+            <div class="tag-list" style="max-height: 350px; overflow-y: auto;">
               <nuxt-link v-for="tag in tags"
                 :key="tag"
                 href=""
