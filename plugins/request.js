@@ -1,8 +1,9 @@
 import axios from 'axios'
 const cookieparser = process.server ? require('cookieparser') : undefined
 
+// https://conduit.productionready.io
 export const request =  axios.create({
-  baseURL: 'https://conduit.productionready.io'
+  baseURL: 'http://realworld.api.fed.lagounews.com'
 })
 
 export default function ({ req, store }) {
